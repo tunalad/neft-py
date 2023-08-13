@@ -13,12 +13,11 @@ from utils import rlinput, find_templates, devicon_handler, generate_menu
 def main(args):
     if args.get('version'): chech_version()
 
-    TEMPLATE_DIR = find_templates()
-    TEMPLATE_FILES = os.listdir(TEMPLATE_DIR)
-    SELECTED = None
+    paths = ["~/.local/share/templates/"]
+    TEMPLATE_FILES = find_templates(paths=paths, use_xdg_path=args.get("use_xdg_path", False))
 
     # INPUT HANDLING
-    menu_entry_index = generate_menu(TEMPLATE_FILES, icons=args.get('icons', False))
+    menu_entry_index = generate_menu(TEMPLATE_FILES, icons=args.get("icons", False), full_path=args.get("full_path", False))
 
     if menu_entry_index == None or menu_entry_index == 0:
         sys.exit()
@@ -27,26 +26,23 @@ def main(args):
 
     # FILE CREATION
     # renaming file
-    newName = rlinput(f'[NeFT] Create file: ', TEMPLATE_FILES[SELECTED])
+    newName = rlinput(f'[NeFT] Create file: ', os.path.basename(TEMPLATE_FILES[SELECTED]))
 
-    # copying file
     if len(newName.strip()) > 0:
-        copy(str(os.path.join(TEMPLATE_DIR, TEMPLATE_FILES[SELECTED])), str(os.getcwd()))
-        os.rename(TEMPLATE_FILES[SELECTED], newName)
-
-        # Optionally print verbose output
-        if args.get('verbose', False):
-            print(f"[NeFT] File '{newName}' created from template '{TEMPLATE_FILES[SELECTED]}'.")
-
+        # copying file
+        copied_file = os.path.join(os.getcwd(), newName)
+        copy(str(os.path.join(TEMPLATE_FILES[SELECTED])), copied_file)
     else:
         print("[NeFT] Invalid file name. Aborting.")
 
-    return args.get('inf', False)
+    return args.get('loop', False)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='NeFT - New From Template - Create a file from pre-defined templates.')
     parser.add_argument('-i', '--icons', action='store_true', help='draw icons in the menu')
     parser.add_argument('-l', '--loop', action='store_true', help='enable loop mode')
+    parser.add_argument('-f', '--full-path', action='store_true', help='draw the whole file path')
+    parser.add_argument('-xdg', '--use-xdg-path', action='store_true', help='include xdg-user-dir templates path')
     # Add more arguments as needed
     args = parser.parse_args()
 
