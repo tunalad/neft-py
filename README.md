@@ -7,14 +7,18 @@ I developed this tool during my transition to a more CLI based workflow when I f
 ## Usage
 
 ```
-usage: neft [-h] [-i] [-l]
+usage: main.py [-h] [-i] [-l] [-f] [-o PATH] [-xdg]
 
 NeFT - New From Template - Create a file from pre-defined templates.
 
 options:
-  -h, --help   show this help message and exit
-  -i, --icons  draw icons in the menu
-  -l, --loop   enable loop mode
+  -h, --help            show this help message and exit
+  -i, --icons           draw icons in the menu
+  -l, --loop            enable loop mode
+  -f, --full-path       draw the whole file path
+  -o PATH, --output PATH
+                        output path
+  -xdg, --use-xdg-path  include xdg-user-dir templates path
 ```
 
 ## Install

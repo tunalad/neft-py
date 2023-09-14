@@ -43,7 +43,7 @@ def devicon_handler(file_name):
     except KeyError:
         return "?"
 
-def generate_menu(files, icons=False, full_path=False):
+def generate_menu(files, icons=False, full_path=False, output=None):
     # generates items
     menu_items = ["None"]
 
@@ -59,7 +59,7 @@ def generate_menu(files, icons=False, full_path=False):
 
     options = {
         "menu_entries": menu_items,
-        "status_bar": f"Item will be created at: {os.path.expanduser(os.getcwd())}",
+        "status_bar": f"Item will be created at: {os.path.expanduser(output or os.getcwd())}",
     }
 
     # returns the menu
