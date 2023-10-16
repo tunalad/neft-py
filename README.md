@@ -7,18 +7,32 @@ I developed this tool during my transition to a more CLI based workflow when I f
 ## Usage
 
 ```
-usage: main.py [-h] [-i] [-l] [-f] [-o PATH] [-xdg]
-
-NeFT - New From Template - Create a file from pre-defined templates.
+NeFT - New From Template - Create files from pre-defined templates.
 
 options:
   -h, --help            show this help message and exit
   -i, --icons           draw icons in the menu
   -l, --loop            enable loop mode
   -f, --full-path       draw the whole file path
+  -xdg, --use-xdg-path  include xdg-user-dir templates path
+  -c PATH, --config PATH
+                        configuration file path
   -o PATH, --output PATH
                         output path
-  -xdg, --use-xdg-path  include xdg-user-dir templates path
+```
+
+## Configuration
+
+```yaml
+# example config file
+paths: # defining paths
+    - "~/Templates/"
+    - "~/.local/share/templates/"
+
+icons: true # draw icons
+full_path: false # print the whole path
+loop: false # loop mode
+use_xdg_path: false # include xdg-user-dir templates path
 ```
 
 ## Install
@@ -36,4 +50,4 @@ Pip packages that this tool uses aren't required to be installed; that will be h
 ## Dependencies
 
 -   `python`
--   `xdg-user-dirs`.
+-   `xdg-user-dirs` (required only if using the `-xdg` option)
