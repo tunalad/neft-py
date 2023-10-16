@@ -1,0 +1,9 @@
+# example config file
+paths:
+    - "~/Templates/"
+    - "~/.local/share/templates/"
+
+icons: true
+full_path: false
+loop: false
+use_xdg_path: false
