@@ -48,7 +48,6 @@ def devicon_handler(file_name):
         extension = os.path.splitext(file_name)[-1][1:]
         return devicons.file_node_extensions[extension]
     except KeyError as e:
-        print(f"KeyError for extension: {extension}")
         return "?"
 
 

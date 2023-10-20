@@ -6,7 +6,7 @@ VENV_DIR = venv
 all: build
 
 build: venv
-	$(VENV_DIR)/bin/pyinstaller --onefile --name $(BINARY_NAME) main.py
+	$(VENV_DIR)/bin/pyinstaller --onefile --name $(BINARY_NAME) main.py --hidden-import devicons
 	mv dist/$(BINARY_NAME) .
 
 venv:
