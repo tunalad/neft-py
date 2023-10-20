@@ -8,7 +8,7 @@ import argparse
 from shutil import copy
 import os
 import sys
-from utils import rlinput, find_templates, devicon_handler, generate_menu, load_config
+from utils import rlinput, find_templates, generate_menu, load_config
 
 
 def main(args):
@@ -70,18 +70,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # config overwriting
-    config_path = (
-        args.config
-        or "$XDG_CONFIG_HOME/neft/neft.yaml"
-        or "$XDG_CONFIG_HOME/neft.yaml"
-        or "~/.config/neft/neft.yaml"
-        or "~/.config/neft.yaml"
-        or "~/neft.yaml"
-    )
+    config_path = [
+        args.config,
+        "$XDG_CONFIG_HOME/neft/neft.yaml",
+        "$XDG_CONFIG_HOME/neft.yaml",
+        "~/.config/neft/neft.yaml",
+        "~/.config/neft.yaml",
+        "~/.neft.yaml",
+    ]
 
+    # load config
     config = load_config(config_path)
+
     if config:
         for key, value in config.items():
+            # applying passed options
             if hasattr(args, key) and value is True:
                 setattr(args, key, value)
 

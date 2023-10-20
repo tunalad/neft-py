@@ -47,7 +47,8 @@ def devicon_handler(file_name):
     try:
         extension = os.path.splitext(file_name)[-1][1:]
         return devicons.file_node_extensions[extension]
-    except KeyError:
+    except KeyError as e:
+        print(f"KeyError for extension: {extension}")
         return "?"
 
 
@@ -74,10 +75,10 @@ def generate_menu(files, icons=False, full_path=False, output=None):
     return TerminalMenu(**options).show()
 
 
-def load_config(path):
-    if os.path.exists(path):
-        with open(path, "r") as file:
-            config = yaml.safe_load(file)
-            return config
-    else:
-        return {}
+def load_config(paths):
+    for path in paths:
+        if path is not None and os.path.exists(normalize_path(path)):
+            with open(normalize_path(path), "r") as file:
+                config = yaml.safe_load(file)
+                return config
+    return {}
