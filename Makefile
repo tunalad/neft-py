@@ -6,7 +6,7 @@ VENV_DIR = venv
 all: build
 
 build: venv
-	$(VENV_DIR)/bin/pyinstaller --onefile --name $(BINARY_NAME) main.py --hidden-import devicons
+	$(VENV_DIR)/bin/nuitka3 --onefile --standalone --output-dir=dist --output-filename=$(BINARY_NAME) main.py 
 	mv dist/$(BINARY_NAME) .
 
 venv:

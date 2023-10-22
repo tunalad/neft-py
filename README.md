@@ -50,4 +50,5 @@ Pip packages that this tool uses aren't required to be installed; that will be h
 ## Dependencies
 
 -   `python`
--   `xdg-user-dirs` (required only if using the `-xdg` option)
+-   `xdg-user-dirs` (required **only if** using the `-xdg` option)
+-   `patchelf` (required **for building** the binary)

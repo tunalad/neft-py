@@ -1,4 +1,4 @@
-pyinstaller>=5.13.0
+Nuitka==1.8.4
 devicons==0.1.0
 simple_term_menu==1.6.1
 PyYAML==6.0.1
