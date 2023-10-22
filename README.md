@@ -17,6 +17,9 @@ options:
   -xdg, --use-xdg-path  include xdg-user-dir templates path
   -c PATH, --config PATH
                         configuration file path
+  -s SORT_TYPE, --sort SORT_TYPE
+                        sort files by name or extension
+  -r, --reverse         reverse the sorting order
   -o PATH, --output PATH
                         output path
 ```
@@ -25,7 +28,10 @@ options:
 
 ```yaml
 # example config file
-paths: # defining paths
+# none of these are required
+# but "paths" are recommended
+
+paths: # defining paths (not required if using use_xdg_path)
     - "~/Templates/"
     - "~/.local/share/templates/"
 
@@ -33,6 +39,8 @@ icons: true # draw icons
 full_path: false # print the whole path
 loop: false # loop mode
 use_xdg_path: false # include xdg-user-dir templates path
+sort: "name" # sort files by "name" or "extension"
+reverse: true # reverse the sorting order
 ```
 
 ## Install

@@ -29,6 +29,8 @@ def main(args):
         icons=args.get("icons", False),
         full_path=args.get("full_path", False),
         output=args.get("output", None),
+        sort_by=args.get("sort", "name"),
+        reverse=args.get("reverse", False),
     )
 
     if menu_entry_index == None or menu_entry_index == 0:
@@ -63,6 +65,8 @@ if __name__ == "__main__":
     parser.add_argument("-f", "--full-path", action="store_true", help="draw the whole file path")
     parser.add_argument("-xdg", "--use-xdg-path", action="store_true", help="include xdg-user-dir templates path",)
     parser.add_argument("-c", "--config", metavar="PATH", type=str, help="configuration file path")
+    parser.add_argument("-s", "--sort", metavar="SORT_TYPE", type=str, default="name", help="sort files by name or extension")
+    parser.add_argument("-r", "--reverse", action="store_true", help="reverse the sorting order")
     parser.add_argument("-o", "--output", metavar="PATH", type=str, help="output path")
     # fmt: on
 
@@ -85,7 +89,7 @@ if __name__ == "__main__":
     if config:
         for key, value in config.items():
             # applying passed options
-            if hasattr(args, key) and value is True:
+            if hasattr(args, key) and value:
                 setattr(args, key, value)
 
     while main(vars(args)):

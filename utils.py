@@ -51,11 +51,13 @@ def devicon_handler(file_name):
         return "?"
 
 
-def generate_menu(files, icons=False, full_path=False, output=None):
+def generate_menu(
+    files, icons=False, full_path=False, output=None, sort_by="name", reverse=False
+):
     # generates items
     menu_items = ["None"]
 
-    for file in files:
+    for file in sort_files(files, sort_by, reverse):
         if icons:
             if not full_path:
                 file = os.path.basename(file)
@@ -81,3 +83,14 @@ def load_config(paths):
                 config = yaml.safe_load(file)
                 return config
     return {}
+
+
+def sort_files(files, sort_by, reverse):
+    if sort_by == "name":
+        return sorted(files, key=lambda x: os.path.basename(x).lower(), reverse=reverse)
+    elif sort_by == "extension":
+        return sorted(
+            files, key=lambda x: os.path.splitext(x)[1].lower(), reverse=reverse
+        )
+    else:
+        return files  # Default to no sorting
