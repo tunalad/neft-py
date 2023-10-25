@@ -34,11 +34,11 @@ def find_templates(paths=[], use_xdg_path=False, sort_by="name", reverse=False):
             pass
 
     normalized_paths = [normalize_path(path) for path in paths]
-    templates = []
+    templates = set()
 
     for path in normalized_paths:
         files = os.listdir(path)
-        templates.extend([os.path.join(path, file) for file in files])
+        templates.update([os.path.join(path, file) for file in files])
 
     return sort_files(templates, sort_by, reverse)
 
