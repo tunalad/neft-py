@@ -22,7 +22,7 @@ def normalize_path(path):
         return path
 
 
-def find_templates(paths=[], use_xdg_path=False):
+def find_templates(paths=[], use_xdg_path=False, sort_by="name", reverse=False):
     if use_xdg_path:
         try:
             completed_process = subprocess.run(
@@ -40,7 +40,7 @@ def find_templates(paths=[], use_xdg_path=False):
         files = os.listdir(path)
         templates.extend([os.path.join(path, file) for file in files])
 
-    return templates
+    return sort_files(templates, sort_by, reverse)
 
 
 def devicon_handler(file_name):
@@ -51,21 +51,20 @@ def devicon_handler(file_name):
         return "?"
 
 
-def generate_menu(
-    files, icons=False, full_path=False, output=None, sort_by="name", reverse=False
-):
+def generate_menu(files, icons=False, full_path=False, output=None):
     # generates items
     menu_items = ["None"]
 
-    for file in sort_files(files, sort_by, reverse):
-        if icons:
-            if not full_path:
-                file = os.path.basename(file)
-            menu_items.append(f"{devicon_handler(file)} {file}")
-        else:
-            if not full_path:
-                file = os.path.basename(file)
-            menu_items.append(file)
+    for file in files:
+        if os.path.isfile(file):
+            if icons and os.path.isfile(file):
+                if not full_path:
+                    file = os.path.basename(file)
+                menu_items.append(f"{devicon_handler(file)} {file}")
+            else:
+                if not full_path:
+                    file = os.path.basename(file)
+                menu_items.append(file)
 
     options = {
         "menu_entries": menu_items,

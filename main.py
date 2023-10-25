@@ -16,7 +16,10 @@ def main(args):
     paths = config.get("paths", ["~/Templates"])
     try:
         TEMPLATE_FILES = find_templates(
-            paths=paths, use_xdg_path=args.get("use_xdg_path", False)
+            paths=paths,
+            use_xdg_path=args.get("use_xdg_path", False),
+            sort_by=args.get("sort", "name"),
+            reverse=args.get("reverse", False),
         )
     except:
         sys.exit(
@@ -29,8 +32,6 @@ def main(args):
         icons=args.get("icons", False),
         full_path=args.get("full_path", False),
         output=args.get("output", None),
-        sort_by=args.get("sort", "name"),
-        reverse=args.get("reverse", False),
     )
 
     if menu_entry_index == None or menu_entry_index == 0:
