@@ -1,5 +1,7 @@
 #!./venv/bin/python
-# pylint: disable=consider-using-sys-exit
+# pylint: disable=missing-function-docstring
+# pylint: disable=missing-module-docstring
+# pylint: disable=redefined-outer-name
 
 # NeFT - New From Template
 # Create files from pre-defined templates.
@@ -15,7 +17,7 @@ def main(args):
     # FINDING TEMPLATES
     paths = config.get("paths", ["~/Templates"])
     try:
-        TEMPLATE_FILES = find_templates(
+        template_files = find_templates(
             paths=paths,
             use_xdg_path=args.get("use_xdg_path", False),
             sort_by=args.get("sort", "name"),
@@ -28,30 +30,30 @@ def main(args):
 
     # INPUT HANDLING
     menu_entry_index = generate_menu(
-        TEMPLATE_FILES,
+        template_files,
         icons=args.get("icons", False),
         full_path=args.get("full_path", False),
         output=args.get("output", None),
     )
 
-    if menu_entry_index == None or menu_entry_index == 0:
+    if menu_entry_index is None or menu_entry_index == 0:
         sys.exit()
     else:
-        SELECTED = menu_entry_index - 1
+        selected = menu_entry_index - 1
 
     # FILE CREATION
-    newName = ""
+    new_name = ""
     if args.get("output"):
-        newName = args.get("output")
+        new_name = args.get("output")
     else:
-        newName = rlinput(
-            f"[NeFT] Create file: ", os.path.basename(TEMPLATE_FILES[SELECTED])
+        new_name = rlinput(
+            "[NeFT] Create file: ", os.path.basename(template_files[selected])
         )
 
-    if len(newName.strip()) > 0:
+    if len(new_name.strip()) > 0:
         # copying file
-        copied_file = os.path.join(os.getcwd(), newName)
-        copy(str(os.path.join(TEMPLATE_FILES[SELECTED])), copied_file)
+        copied_file = os.path.join(os.getcwd(), new_name)
+        copy(str(os.path.join(template_files[selected])), copied_file)
     else:
         print("[NeFT] Invalid file name. Aborting.")
 
