@@ -8,8 +8,8 @@ I developed this tool during my transition to a more CLI based workflow when I f
 
 1. [Usage](#1-usage)
 2. [Configuration](#2-configuration)
-3. [Install](#3-install)
-4. [Dependencies](#4-dependencies)
+3. [Dependencies](#3-dependencies)
+4. [Install](#4-install)
 
 # 1. Usage
 
@@ -50,20 +50,20 @@ sort: "name" # sort files by "name" or "extension"
 reverse: true # reverse the sorting order
 ```
 
-# 3. Install
+# 3. Dependencies
 
-Binary will be located at `~/.local/bin/`
+Pip packages that this tool uses aren't required to be installed; that will be handled during the build process inside a virtual environment.
+
+-   `python`
+-   `xdg-user-dirs` (required **only if** using the `-xdg` option)
+-   `patchelf` (required for building the binary)
+
+# 4. Install
+
+Binary `neft` will be located at `~/.local/bin/`
 
 ```
 git clone https://github.com/tunalad/neft-py.git
 cd neft-py
 make install
 ```
-
-Pip packages that this tool uses aren't required to be installed; that will be handled during the build process inside a virtual environment.
-
-# 4. Dependencies
-
--   `python`
--   `xdg-user-dirs` (required **only if** using the `-xdg` option)
--   `patchelf` (required **for building** the binary)
