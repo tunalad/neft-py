@@ -4,7 +4,14 @@ NeFT is a simple command-line tool that allows you to create new files using pre
 
 I developed this tool during my transition to a more CLI based workflow when I found myself missing the convenience of the 'Create New' option in GUI file managers.
 
-## Usage
+# Table of contents
+
+1. [Usage](#1-usage)
+2. [Configuration](#2-configuration)
+3. [Install](#3-install)
+4. [Dependencies](#4-dependencies)
+
+# 1. Usage
 
 ```
 NeFT - New From Template - Create files from pre-defined templates.
@@ -24,7 +31,7 @@ options:
                         output path
 ```
 
-## Configuration
+# 2. Configuration
 
 ```yaml
 # example config file
@@ -43,7 +50,7 @@ sort: "name" # sort files by "name" or "extension"
 reverse: true # reverse the sorting order
 ```
 
-## Install
+# 3. Install
 
 Binary will be located at `~/.local/bin/`
 
@@ -55,7 +62,7 @@ make install
 
 Pip packages that this tool uses aren't required to be installed; that will be handled during the build process inside a virtual environment.
 
-## Dependencies
+# 4. Dependencies
 
 -   `python`
 -   `xdg-user-dirs` (required **only if** using the `-xdg` option)
