@@ -1,7 +1,7 @@
 import os
 import subprocess
 import readline
-import devicons
+import nerd_icons
 import yaml
 from simple_term_menu import TerminalMenu
 
@@ -46,9 +46,9 @@ def find_templates(paths=[], use_xdg_path=False, sort_by="name", reverse=False):
 def devicon_handler(file_name):
     try:
         extension = os.path.splitext(file_name)[-1][1:]
-        return devicons.file_node_extensions[extension]
+        return nerd_icons.EXTENSION_ICONS[extension]
     except KeyError as e:
-        return "?"
+        return nerd_icons.Icons().FILE
 
 
 def generate_menu(files, icons=False, full_path=False, output=None):
