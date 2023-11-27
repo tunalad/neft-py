@@ -1,3 +1,5 @@
+# pylint: disable=missing-function-docstring
+# pylint: disable=missing-module-docstring
 import os
 import subprocess
 import readline
@@ -16,22 +18,24 @@ def rlinput(prompt, default_value=""):
 def normalize_path(path):
     if path.startswith("~"):
         return os.path.expanduser(path)
-    elif path.startswith("$"):
+    if path.startswith("$"):
         return os.path.expandvars(path)
-    else:
-        return path
+    return path
 
 
 def find_templates(paths=[], use_xdg_path=False, sort_by="name", reverse=False):
     if use_xdg_path:
         try:
             completed_process = subprocess.run(
-                ["xdg-user-dir", "TEMPLATES"], capture_output=True, text=True
+                ["xdg-user-dir", "TEMPLATES"],
+                capture_output=True,
+                text=True,
+                check=True,
             )
             if completed_process.returncode == 0:
                 paths.insert(0, completed_process.stdout.strip() + "/")
         except FileNotFoundError:
-            pass
+            print("[NeFT] Command xdg-user-dir not found. Ignoring the option.")
 
     normalized_paths = [normalize_path(path) for path in paths]
     templates = set()
@@ -47,7 +51,7 @@ def devicon_handler(file_name):
     try:
         extension = os.path.splitext(file_name)[-1][1:]
         return nerd_icons.EXTENSION_ICONS[extension]
-    except KeyError as e:
+    except KeyError:
         return nerd_icons.Icons().FILE
 
 
@@ -87,9 +91,8 @@ def load_config(paths):
 def sort_files(files, sort_by, reverse):
     if sort_by == "name":
         return sorted(files, key=lambda x: os.path.basename(x).lower(), reverse=reverse)
-    elif sort_by == "extension":
+    if sort_by == "extension":
         return sorted(
             files, key=lambda x: os.path.splitext(x)[1].lower(), reverse=reverse
         )
-    else:
-        return files  # Default to no sorting
+    return files
