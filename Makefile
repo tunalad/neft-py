@@ -11,6 +11,7 @@ build: venv
 
 venv:
 	python3 -m venv $(VENV_DIR)
+	$(VENV_DIR)/bin/python -m pip install Nuitka==1.8.4
 	$(VENV_DIR)/bin/python -m pip install -r requirements.txt
 
 install: build
