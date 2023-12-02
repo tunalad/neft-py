@@ -1,6 +1,8 @@
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-module-docstring
+# pylint: disable=unspecified-encoding
 import os
+from sys import exit
 import subprocess
 import readline
 import nerd_icons
@@ -37,12 +39,17 @@ def find_templates(paths=[], use_xdg_path=False, sort_by="name", reverse=False):
         except FileNotFoundError:
             print("[NeFT] Command xdg-user-dir not found. Ignoring the option.")
 
+    # path normalizing
     normalized_paths = [normalize_path(path) for path in paths]
     templates = set()
 
+    # finding files
     for path in normalized_paths:
         files = os.listdir(path)
         templates.update([os.path.join(path, file) for file in files])
+
+    # removing directories
+    templates = {path for path in templates if os.path.isfile(path)}
 
     return sort_files(templates, sort_by, reverse)
 
@@ -60,15 +67,10 @@ def generate_menu(files, icons=False, full_path=False, output=None):
     menu_items = ["None"]
 
     for file in files:
-        if os.path.isfile(file):
-            if icons and os.path.isfile(file):
-                if not full_path:
-                    file = os.path.basename(file)
-                menu_items.append(f"{devicon_handler(file)} {file}")
-            else:
-                if not full_path:
-                    file = os.path.basename(file)
-                menu_items.append(file)
+        if icons:
+            if not full_path:
+                file = os.path.basename(file)
+            menu_items.append(f"{devicon_handler(file)} {file}")
 
     options = {
         "menu_entries": menu_items,
