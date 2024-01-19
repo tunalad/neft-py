@@ -3,7 +3,7 @@
 # pylint: disable=unspecified-encoding
 import os
 from sys import exit
-from shutil import copy
+from shutil import copy, move
 import subprocess
 import readline
 import nerd_icons
@@ -110,8 +110,23 @@ def add_template(file, template_dir):
 def remove_template(template_name, template_dir):
     try:
         template_dir_path = normalize_path(template_dir)
-        # print(f"{template_dir_path}/{template_name}")
         os.remove(f"{template_dir_path}/{template_name}")
-        print(f"[NeFT] removed '{template_name}' from '{template_dir}'.")
+        print(f"[NeFT] Removed '{template_name}' from '{template_dir}'.")
     except:
         print(f"[NeFT] '{template_name}' doesn't exist.")
+
+
+def rename_template(old_name, new_name, paths):
+    for path in paths:
+        if not path.endswith("/"):
+            path += "/"
+
+        possible_path = normalize_path(f"{path}{old_name}")
+        new_path = normalize_path(f"{path}{new_name}")
+
+        if os.path.isfile(possible_path):
+            move(possible_path, new_path)
+            print(f"[NeFT] Renamed '{old_name}' to '{new_name}'.")
+            return
+
+    print("[NeFT] Couldn't find the template.")

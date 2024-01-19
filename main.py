@@ -17,6 +17,7 @@ from utils import (
     load_config,
     add_template,
     remove_template,
+    rename_template,
 )
 
 
@@ -45,7 +46,7 @@ def main(args):
                 case "remove":
                     remove_template(args.get("TEMPLATE"), paths[0])
                 case "rename":
-                    sys.exit(f"rename from {args.get('OLD')} to {args.get('NEW')}")
+                    rename_template(args.get("OLD"), args.get("NEW"), paths)
             sys.exit()
         except (AttributeError, KeyError, FileNotFoundError):
             sys.exit("[NeFT] Invalid input.")
