@@ -3,6 +3,7 @@
 # pylint: disable=unspecified-encoding
 import os
 from sys import exit
+from shutil import copy
 import subprocess
 import readline
 import nerd_icons
@@ -98,3 +99,9 @@ def sort_files(files, sort_by, reverse):
             files, key=lambda x: os.path.splitext(x)[1].lower(), reverse=reverse
         )
     return files
+
+
+def add_template(file, template_dir):
+    template_dir = os.path.expanduser(template_dir)
+    copy(file, template_dir)
+    print(f"[NeFT] Added '{os.path.basename(file)}' to '{template_dir}'.")

@@ -10,7 +10,7 @@ import argparse
 from shutil import copy
 import os
 import sys
-from utils import rlinput, find_templates, generate_menu, load_config
+from utils import rlinput, find_templates, generate_menu, load_config, add_template
 
 
 def main(args):
@@ -27,6 +27,21 @@ def main(args):
         sys.exit(
             "[NeFT] Couldn't find any template directories. Either create ~/Templates or define paths in neft.yaml."
         )
+
+    # SUBCOMMANDS
+    if args.get("subcommand_name"):
+        try:
+            subcmd = args.get("subcommand_name")
+            match subcmd:
+                case "add":
+                    add_template(args.get("PATH"), paths[0])
+                case "remove":
+                    sys.exit(f"[NeFT] remove {args.get('TEMPLATE')} from template")
+                case "rename":
+                    sys.exit(f"rename from {args.get('OLD')} to {args.get('NEW')}")
+            sys.exit()
+        except (AttributeError, KeyError, FileNotFoundError):
+            sys.exit("[NeFT] Invalid input.")
 
     # INPUT HANDLING
     menu_entry_index = generate_menu(
@@ -63,6 +78,7 @@ def main(args):
 if __name__ == "__main__":
     # fmt: off
     parser = argparse.ArgumentParser(description="NeFT - New From Template - Create files from pre-defined templates.")
+
     parser.add_argument("-i", "--icons", action="store_true", help="draw icons in the menu")
     parser.add_argument("-l", "--loop", action="store_true", help="enable loop mode")
     parser.add_argument("-f", "--full-path", action="store_true", help="draw the whole file path")
@@ -71,6 +87,14 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--sort", metavar="SORT_TYPE", type=str, default="name", help="sort files by name or extension")
     parser.add_argument("-r", "--reverse", action="store_true", help="reverse the sorting order")
     parser.add_argument("-o", "--output", metavar="PATH", type=str, help="output path")
+
+    subparsers = parser.add_subparsers(title="subcommands", dest="subcommand_name")
+    subparsers.add_parser("add", help="add file to templates").add_argument("PATH", help="path to the file to be added")
+    subparsers.add_parser("remove", help="remove a template").add_argument("TEMPLATE", type=str, help="template name to be removed")
+
+    rename_parser = subparsers.add_parser("rename", help="rename template")
+    rename_parser.add_argument("OLD", help="old template name")
+    rename_parser.add_argument("NEW", help="new template name")
     # fmt: on
 
     # add more arguments as needed
