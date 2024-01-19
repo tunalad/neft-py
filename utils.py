@@ -75,7 +75,7 @@ def generate_menu(files, icons=False, full_path=False, output=None):
 
     options = {
         "menu_entries": menu_items,
-        "status_bar": f"Item will be created at: {os.path.expanduser(output or os.getcwd())}",
+        "status_bar": f"Item will be created at: {normalize_path(output or os.getcwd())}",
     }
 
     # returns the menu
@@ -102,6 +102,16 @@ def sort_files(files, sort_by, reverse):
 
 
 def add_template(file, template_dir):
-    template_dir = os.path.expanduser(template_dir)
+    template_dir = normalize_path(template_dir)
     copy(file, template_dir)
     print(f"[NeFT] Added '{os.path.basename(file)}' to '{template_dir}'.")
+
+
+def remove_template(template_name, template_dir):
+    try:
+        template_dir_path = normalize_path(template_dir)
+        # print(f"{template_dir_path}/{template_name}")
+        os.remove(f"{template_dir_path}/{template_name}")
+        print(f"[NeFT] removed '{template_name}' from '{template_dir}'.")
+    except:
+        print(f"[NeFT] '{template_name}' doesn't exist.")

@@ -10,7 +10,14 @@ import argparse
 from shutil import copy
 import os
 import sys
-from utils import rlinput, find_templates, generate_menu, load_config, add_template
+from utils import (
+    rlinput,
+    find_templates,
+    generate_menu,
+    load_config,
+    add_template,
+    remove_template,
+)
 
 
 def main(args):
@@ -36,7 +43,7 @@ def main(args):
                 case "add":
                     add_template(args.get("PATH"), paths[0])
                 case "remove":
-                    sys.exit(f"[NeFT] remove {args.get('TEMPLATE')} from template")
+                    remove_template(args.get("TEMPLATE"), paths[0])
                 case "rename":
                     sys.exit(f"rename from {args.get('OLD')} to {args.get('NEW')}")
             sys.exit()
