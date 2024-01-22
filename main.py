@@ -63,7 +63,6 @@ def main(args):
         template_files,
         icons=args.get("icons", False),
         full_path=args.get("full_path", False),
-        output=args.get("output", None),
     )
 
     if menu_entry_index is None or menu_entry_index == 0:

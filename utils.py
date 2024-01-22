@@ -2,14 +2,12 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=unspecified-encoding
 import os
-from sys import exit
 from shutil import copy, move
 import subprocess
 import readline
 import nerd_icons
 import yaml
 from simple_term_menu import TerminalMenu
-from pprint import pprint
 
 
 def rlinput(prompt, default_value=""):
@@ -89,7 +87,7 @@ def devicon_handler(file_name):
         return nerd_icons.Icons().FILE
 
 
-def generate_menu(files, icons=False, full_path=False, output=None):
+def generate_menu(files, icons=False, full_path=False):
     # generates items
     menu_items = {"None": "None"}
     menu_items.update(templates_dict(files, icons, full_path))
