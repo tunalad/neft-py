@@ -43,15 +43,15 @@ def find_templates(paths=[], use_xdg_path=False, sort_by="name", reverse=False):
 
     # path normalizing
     normalized_paths = [normalize_path(path) for path in paths]
-    templates = set()
+    templates = []
 
     # finding files
     for path in normalized_paths:
         files = os.listdir(path)
-        templates.update([os.path.join(path, file) for file in files])
+        templates.extend([os.path.join(path, file) for file in files])
 
     # removing directories
-    templates = {path for path in templates if os.path.isfile(path)}
+    templates = [path for path in templates if os.path.isfile(path)]
 
     return sort_files(templates, sort_by, reverse)
 
@@ -66,17 +66,28 @@ def devicon_handler(file_name):
 
 def generate_menu(files, icons=False, full_path=False, output=None):
     # generates items
-    menu_items = ["None"]
+    menu_items = {"None": "None"}
 
     for file in files:
         if icons:
             if not full_path:
-                file = os.path.basename(file)
-            menu_items.append(f"{devicon_handler(file)} {file}")
+                basename = os.path.basename(file)
+                original_basename = basename
+                # Handle multiple files with the same name
+                count_duplicates = 1
+                while f"{devicon_handler(basename)} {basename}" in menu_items:
+                    basename = f"{original_basename} ({count_duplicates})"
+                    count_duplicates += 1
+                menu_items[f"{devicon_handler(original_basename)} {basename}"] = file
+
+    def get_path(item):
+        if item == "None":
+            return "File path: "
+        return menu_items[item]
 
     options = {
-        "menu_entries": menu_items,
-        "status_bar": f"Item will be created at: {normalize_path(output or os.getcwd())}",
+        "menu_entries": list(menu_items.keys()),
+        "status_bar": get_path,
     }
 
     # returns the menu
@@ -100,6 +111,11 @@ def sort_files(files, sort_by, reverse):
             files, key=lambda x: os.path.splitext(x)[1].lower(), reverse=reverse
         )
     return files
+
+
+# # # # # # # # # # # #
+# # # SUBCOMMANDS # # #
+# # # # # # # # # # # #
 
 
 def add_template(file, template_dir):
