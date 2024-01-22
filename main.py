@@ -18,6 +18,7 @@ from utils import (
     add_template,
     remove_template,
     rename_template,
+    list_templates,
 )
 
 
@@ -47,6 +48,12 @@ def main(args):
                     remove_template(args.get("TEMPLATE"), paths[0])
                 case "rename":
                     rename_template(args.get("OLD"), args.get("NEW"), paths)
+                case "list":
+                    list_templates(
+                        template_files,
+                        icons=args.get("icons", False),
+                        full_path=args.get("full_path", False),
+                    )
             sys.exit()
         except (AttributeError, KeyError, FileNotFoundError):
             sys.exit("[NeFT] Invalid input.")
@@ -97,6 +104,7 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output", metavar="PATH", type=str, help="output path")
 
     subparsers = parser.add_subparsers(title="subcommands", dest="subcommand_name")
+    subparsers.add_parser("list", help="list all templates")
     subparsers.add_parser("add", help="add file to templates").add_argument("PATH", help="path to the file to be added")
     subparsers.add_parser("remove", help="remove a template").add_argument("TEMPLATE", type=str, help="template name to be removed")
 

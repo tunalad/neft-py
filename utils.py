@@ -9,6 +9,7 @@ import readline
 import nerd_icons
 import yaml
 from simple_term_menu import TerminalMenu
+from pprint import pprint
 
 
 def rlinput(prompt, default_value=""):
@@ -130,3 +131,11 @@ def rename_template(old_name, new_name, paths):
             return
 
     print("[NeFT] Couldn't find the template.")
+
+
+def list_templates(files, icons=False, full_path=False):
+    for file in files:
+        if icons:
+            if not full_path:
+                file = os.path.basename(file)
+            print(f"{devicon_handler(file)} {file}")
