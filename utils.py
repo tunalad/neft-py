@@ -69,16 +69,25 @@ def generate_menu(files, icons=False, full_path=False, output=None):
     menu_items = {"None": "None"}
 
     for file in files:
-        if icons:
-            if not full_path:
-                basename = os.path.basename(file)
-                original_basename = basename
-                # Handle multiple files with the same name
-                count_duplicates = 1
-                while f"{devicon_handler(basename)} {basename}" in menu_items:
-                    basename = f"{original_basename} ({count_duplicates})"
-                    count_duplicates += 1
+        # basename only
+        if not full_path:
+            basename = os.path.basename(file)
+            original_basename = basename
+            # handle multiple files with the same name
+            count_duplicates = 1
+            while basename in menu_items:
+                basename = f"{original_basename} ({count_duplicates})"
+                count_duplicates += 1
+            if icons:
                 menu_items[f"{devicon_handler(original_basename)} {basename}"] = file
+            else:
+                menu_items[basename] = file
+        # if full path
+        else:
+            if icons:
+                menu_items[f"{devicon_handler(os.path.basename(file))} {file}"] = file
+            else:
+                menu_items[file] = file
 
     def get_path(item):
         if item == "None":
@@ -150,8 +159,23 @@ def rename_template(old_name, new_name, paths):
 
 
 def list_templates(files, icons=False, full_path=False):
+    menu_items = {}
+
     for file in files:
+        if not full_path:
+            basename = os.path.basename(file)
+            original_basename = basename
+            # handle multiple files with the same name
+            count_duplicates = 1
+            while basename in menu_items:
+                basename = f"{original_basename} ({count_duplicates})"
+                count_duplicates += 1
+            menu_items[basename] = file
+        else:
+            menu_items[file] = file
+
+    for item in menu_items:
         if icons:
-            if not full_path:
-                file = os.path.basename(file)
-            print(f"{devicon_handler(file)} {file}")
+            print(f"{devicon_handler(item)} {item}")
+        else:
+            print(item)
