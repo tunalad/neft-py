@@ -27,6 +27,31 @@ def normalize_path(path):
     return path
 
 
+def templates_dict(files, icons=False, full_path=False):
+    menu_items = {}
+
+    for file in files:
+        if not full_path:
+            basename = os.path.basename(file)
+            original_basename = basename
+            # handle multiple files with the same name
+            count_duplicates = 1
+            while basename in menu_items:
+                basename = f"{original_basename} ({count_duplicates})"
+                count_duplicates += 1
+            if icons:
+                menu_items[f"{devicon_handler(original_basename)} {basename}"] = file
+            else:
+                menu_items[basename] = file
+        else:
+            if icons:
+                menu_items[f"{devicon_handler(os.path.basename(file))} {file}"] = file
+            else:
+                menu_items[file] = file
+
+    return menu_items
+
+
 def find_templates(paths=[], use_xdg_path=False, sort_by="name", reverse=False):
     if use_xdg_path:
         try:
@@ -67,27 +92,7 @@ def devicon_handler(file_name):
 def generate_menu(files, icons=False, full_path=False, output=None):
     # generates items
     menu_items = {"None": "None"}
-
-    for file in files:
-        # basename only
-        if not full_path:
-            basename = os.path.basename(file)
-            original_basename = basename
-            # handle multiple files with the same name
-            count_duplicates = 1
-            while basename in menu_items:
-                basename = f"{original_basename} ({count_duplicates})"
-                count_duplicates += 1
-            if icons:
-                menu_items[f"{devicon_handler(original_basename)} {basename}"] = file
-            else:
-                menu_items[basename] = file
-        # if full path
-        else:
-            if icons:
-                menu_items[f"{devicon_handler(os.path.basename(file))} {file}"] = file
-            else:
-                menu_items[file] = file
+    menu_items.update(templates_dict(files, icons, full_path))
 
     def get_path(item):
         if item == "None":
@@ -159,23 +164,7 @@ def rename_template(old_name, new_name, paths):
 
 
 def list_templates(files, icons=False, full_path=False):
-    menu_items = {}
-
-    for file in files:
-        if not full_path:
-            basename = os.path.basename(file)
-            original_basename = basename
-            # handle multiple files with the same name
-            count_duplicates = 1
-            while basename in menu_items:
-                basename = f"{original_basename} ({count_duplicates})"
-                count_duplicates += 1
-            menu_items[basename] = file
-        else:
-            menu_items[file] = file
+    menu_items = templates_dict(files, icons, full_path)
 
     for item in menu_items:
-        if icons:
-            print(f"{devicon_handler(item)} {item}")
-        else:
-            print(item)
+        print(item)
