@@ -67,10 +67,17 @@ def generate_menu(files, icons=False, full_path=False, output=None):
     menu_items = ["None"]
 
     for file in files:
-        if icons:
-            if not full_path:
-                file = os.path.basename(file)
-            menu_items.append(f"{devicon_handler(file)} {file}")
+        if not full_path:
+            file = os.path.basename(file)
+            if icons:
+                menu_items.append(f"{devicon_handler(file)} {file}")
+            else:
+                menu_items.append(file)
+        else:
+            if icons:
+                menu_items.append(f"{devicon_handler(file)} {file}")
+            else:
+                menu_items.append(file)
 
     options = {
         "menu_entries": menu_items,
