@@ -130,6 +130,11 @@ if __name__ == "__main__":
 
     if config:
         for key, value in config.items():
+            # propritize these passed options over the config one
+            skipable_args = ["sort", "reverse", "use_xdg_path"]
+            if key in skipable_args:
+                continue
+
             # applying passed options
             if hasattr(args, key) and value:
                 setattr(args, key, value)

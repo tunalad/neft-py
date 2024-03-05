@@ -119,13 +119,17 @@ def load_config(paths):
 
 
 def sort_files(files, sort_by, reverse):
-    if sort_by == "name":
-        return sorted(files, key=lambda x: os.path.basename(x).lower(), reverse=reverse)
-    if sort_by == "extension":
-        return sorted(
-            files, key=lambda x: os.path.splitext(x)[1].lower(), reverse=reverse
-        )
-    return files
+    match sort_by:
+        case "name":
+            return sorted(
+                files, key=lambda x: os.path.basename(x).lower(), reverse=reverse
+            )
+        case "extension":
+            return sorted(
+                files, key=lambda x: os.path.splitext(x)[1].lower(), reverse=reverse
+            )
+        case _:
+            return files
 
 
 # # # # # # # # # # # #
