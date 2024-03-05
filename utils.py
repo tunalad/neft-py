@@ -32,15 +32,18 @@ def templates_dict(files, icons=False, full_path=False):
         if not full_path:
             basename = os.path.basename(file)
             original_basename = basename
+
+            if icons:
+                basename = f"{devicon_handler(original_basename)} {basename}"
+                original_basename = basename
+
             # handle multiple files with the same name
             count_duplicates = 1
             while basename in menu_items:
                 basename = f"{original_basename} ({count_duplicates})"
                 count_duplicates += 1
-            if icons:
-                menu_items[f"{devicon_handler(original_basename)} {basename}"] = file
-            else:
-                menu_items[basename] = file
+
+            menu_items[basename] = file
         else:
             if icons:
                 menu_items[f"{devicon_handler(os.path.basename(file))} {file}"] = file
