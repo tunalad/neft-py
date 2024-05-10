@@ -90,7 +90,7 @@ def devicon_handler(file_name):
         return nerd_icons.Icons().FILE
 
 
-def generate_menu(files, icons=False, full_path=False):
+def generate_menu(files, icons=False, full_path=False, multi_select=False):
     # generates items
     menu_items = {"None": "None"}
     menu_items.update(templates_dict(files, icons, full_path))
@@ -103,6 +103,8 @@ def generate_menu(files, icons=False, full_path=False):
     options = {
         "menu_entries": list(menu_items.keys()),
         "status_bar": get_path,
+        "multi_select": multi_select,
+        "multi_select_select_on_accept": False,
     }
 
     # returns the menu
@@ -159,40 +161,35 @@ def add_template(file, template_dir):
     print(f"[NeFT] Added '{new_file_name}' to '{template_dir}'.")
 
 
-def remove_template(template_name, template_dirs):
-    for template_dir in template_dirs:
+def remove_template(files):
+    for file in files:
         try:
-            template_dir_path = normalize_path(template_dir)
-            os.remove(f"{template_dir_path}/{template_name}")
-            print(f"[NeFT] Removed '{template_name}' from '{template_dir}'.")
-        except FileNotFoundError:
-            print(f"[NeFT] '{template_name}' doesn't exist in '{template_dir}'.")
+            os.remove(file)
+            print(f"[NeFT] Removed '{file}'.")
         except Exception as e:
-            print(
-                f"[NeFT] An error ocurred while removing '{template_name}' from '{template_dir}':\n"
-            )
+            print(f"[NeFT] An error ocurred while removing '{file}':\n")
 
 
-def rename_template(old_name, new_name, paths):
-    for path in paths:
-        if not path.endswith("/"):
-            path += "/"
+def rename_template(old_path, new_name):
+    path, old_name = os.path.split(old_path)
 
-        possible_path = normalize_path(f"{path}{old_name}")
-        new_path = normalize_path(f"{path}{new_name}")
+    # Making sure path ends with a separator
+    path = os.path.join(path, "")
 
-        if os.path.isfile(possible_path):
-            # making sure file doesn't exist already
-            if os.path.exists(new_path):
-                print(f"[NeFT] '{new_path}' already exists. Skipping rename.")
-                return
+    new_path = os.path.join(path, new_name)
 
-            # renaming
-            move(possible_path, new_path)
-            print(f"[NeFT] Renamed '{old_name}' to '{new_name}'.")
+    # Making sure the file exists at the old path
+    if os.path.isfile(old_path):
+        # Making sure the new path doesn't exist already
+        if os.path.exists(new_path):
+            print(f"[NeFT] '{new_path}' already exists. Skipping rename.")
             return
 
-    print("[NeFT] Couldn't find the template.")
+        # Renaming the file
+        move(old_path, new_path)
+        print(f"[NeFT] Renamed '{old_name}' to '{new_name}'.")
+    else:
+        print("[NeFT] Couldn't find the template.")
 
 
 def list_templates(files, icons=False, full_path=False):

@@ -46,9 +46,34 @@ def main(args):
                 case "add":
                     add_template(args.get("PATH"), paths[0])
                 case "remove":
-                    remove_template(args.get("TEMPLATE"), paths)
+                    remove_selected = generate_menu(
+                        template_files,
+                        icons=args.get("icons", False),
+                        full_path=args.get("full_path", False),
+                        multi_select=True,
+                    )
+                    files = []
+                    for file in remove_selected:
+                        files.append(template_files[file - 1])
+                    remove_template(files)
                 case "rename":
-                    rename_template(args.get("OLD"), args.get("NEW"), paths)
+                    rename_selected = generate_menu(
+                        template_files,
+                        icons=args.get("icons", False),
+                        full_path=args.get("full_path", False),
+                    )
+
+                    if rename_selected is None or rename_selected == 0:
+                        sys.exit()
+                    else:
+                        selected = rename_selected - 1
+
+                    new_name = rlinput(
+                        f"[NeFT] Rename '{os.path.basename(template_files[selected])}' to: ",
+                        os.path.basename(template_files[selected]),
+                    )
+                    # print(new_name)
+                    rename_template(template_files[selected], new_name)
                 case "list":
                     list_templates(
                         template_files,
@@ -110,11 +135,8 @@ if __name__ == "__main__":
     subparsers = parser.add_subparsers(title="subcommands", dest="subcommand_name")
     subparsers.add_parser("list", help="list all templates")
     subparsers.add_parser("add", help="add file to templates").add_argument("PATH", help="path to the file to be added")
-    subparsers.add_parser("remove", help="remove a template").add_argument("TEMPLATE", type=str, help="template name to be removed")
-
-    rename_parser = subparsers.add_parser("rename", help="rename template")
-    rename_parser.add_argument("OLD", help="old template name")
-    rename_parser.add_argument("NEW", help="new template name")
+    subparsers.add_parser("remove", help="remove a template")
+    subparsers.add_parser("rename", help="rename template")
     # fmt: on
 
     # add more arguments as needed
