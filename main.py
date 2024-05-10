@@ -22,10 +22,16 @@ from utils import (
     list_templates,
 )
 
+VERSION = "1.0.2"
+
 
 def main(args):
     # FINDING TEMPLATES
     paths = config.get("paths", ["~/Templates"])
+
+    if args.get("version", False):
+        sys.exit(VERSION)
+
     try:
         template_files = find_templates(
             paths=paths,
@@ -123,6 +129,7 @@ if __name__ == "__main__":
         description="NeFT - New From Template - Create files from pre-defined templates.",
     )
 
+    parser.add_argument("-v", "--version", action="store_true", help="print NeFT's version and exit")
     parser.add_argument("-i", "--icons", action="store_true", help="draw icons in the menu")
     parser.add_argument("-l", "--loop", action="store_true", help="enable loop mode")
     parser.add_argument("-f", "--full-path", action="store_true", help="draw the whole file path")
