@@ -159,13 +159,18 @@ def add_template(file, template_dir):
     print(f"[NeFT] Added '{new_file_name}' to '{template_dir}'.")
 
 
-def remove_template(template_name, template_dir):
-    try:
-        template_dir_path = normalize_path(template_dir)
-        os.remove(f"{template_dir_path}/{template_name}")
-        print(f"[NeFT] Removed '{template_name}' from '{template_dir}'.")
-    except:
-        print(f"[NeFT] '{template_name}' doesn't exist.")
+def remove_template(template_name, template_dirs):
+    for template_dir in template_dirs:
+        try:
+            template_dir_path = normalize_path(template_dir)
+            os.remove(f"{template_dir_path}/{template_name}")
+            print(f"[NeFT] Removed '{template_name}' from '{template_dir}'.")
+        except FileNotFoundError:
+            print(f"[NeFT] '{template_name}' doesn't exist in '{template_dir}'.")
+        except Exception as e:
+            print(
+                f"[NeFT] An error ocurred while removing '{template_name}' from '{template_dir}':\n"
+            )
 
 
 def rename_template(old_name, new_name, paths):

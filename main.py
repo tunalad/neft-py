@@ -46,7 +46,7 @@ def main(args):
                 case "add":
                     add_template(args.get("PATH"), paths[0])
                 case "remove":
-                    remove_template(args.get("TEMPLATE"), paths[0])
+                    remove_template(args.get("TEMPLATE"), paths)
                 case "rename":
                     rename_template(args.get("OLD"), args.get("NEW"), paths)
                 case "list":
