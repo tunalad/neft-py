@@ -14,21 +14,28 @@ I developed this tool during my transition to a more CLI based workflow when I f
 ## 1. Usage
 
 ```
+usage: neft [OPTION]... [SUBCOMMAND]... [FILE]...
+
 NeFT - New From Template - Create files from pre-defined templates.
 
 options:
   -h, --help            show this help message and exit
+  -v, --version         print NeFT's version and exit
   -i, --icons           draw icons in the menu
   -l, --loop            enable loop mode
   -f, --full-path       draw the whole file path
   -xdg, --use-xdg-path  include xdg-user-dir templates path
-  -c PATH, --config PATH
-                        configuration file path
-  -s SORT_TYPE, --sort SORT_TYPE
-                        sort files by name or extension
+  -c , --config         configuration file path
+  -s , --sort           sort files by name or extension
   -r, --reverse         reverse the sorting order
-  -o PATH, --output PATH
-                        output path
+  -o , --output         output path
+
+subcommands:
+  {list,add,remove,rename}
+    list                list all templates
+    add                 add file to templates
+    remove              remove a template
+    rename              rename template
 ```
 
 ## 2. Configuration
