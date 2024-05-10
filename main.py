@@ -10,6 +10,7 @@ import argparse
 from shutil import copy
 import os
 import sys
+from argparse_formatter import ParagraphFormatter, FlexiFormatter
 from utils import (
     rlinput,
     find_templates,
@@ -91,16 +92,20 @@ def main(args):
 
 if __name__ == "__main__":
     # fmt: off
-    parser = argparse.ArgumentParser(description="NeFT - New From Template - Create files from pre-defined templates.")
+    parser = argparse.ArgumentParser(
+        prog="neft",
+        usage="%(prog)s [OPTION]... [SUBCOMMAND]... [FILE]...",
+        description="NeFT - New From Template - Create files from pre-defined templates.",
+    )
 
     parser.add_argument("-i", "--icons", action="store_true", help="draw icons in the menu")
     parser.add_argument("-l", "--loop", action="store_true", help="enable loop mode")
     parser.add_argument("-f", "--full-path", action="store_true", help="draw the whole file path")
     parser.add_argument("-xdg", "--use-xdg-path", action="store_true", help="include xdg-user-dir templates path",)
-    parser.add_argument("-c", "--config", metavar="PATH", type=str, help="configuration file path")
-    parser.add_argument("-s", "--sort", metavar="SORT_TYPE", type=str, default="name", help="sort files by name or extension")
+    parser.add_argument("-c", "--config", metavar="", type=str, help="configuration file path")
+    parser.add_argument("-s", "--sort", metavar="", type=str, default="name", help="sort files by name or extension")
     parser.add_argument("-r", "--reverse", action="store_true", help="reverse the sorting order")
-    parser.add_argument("-o", "--output", metavar="PATH", type=str, help="output path")
+    parser.add_argument("-o", "--output", metavar="", type=str, help="output path")
 
     subparsers = parser.add_subparsers(title="subcommands", dest="subcommand_name")
     subparsers.add_parser("list", help="list all templates")
