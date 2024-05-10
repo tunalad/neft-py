@@ -1,9 +1,13 @@
 # example config file
-paths:
-    - "~/Templates/"
+# none of these are required, but "paths" are recommended
+
+paths: # defining paths (not required if using use_xdg_path)
+    - "~/Templates"
     - "~/.local/share/templates/"
 
-icons: true
-full_path: false
-loop: false
-use_xdg_path: false
+icons: true # draw icons
+full_path: false # print the whole path
+loop: false # loop mode
+use_xdg_path: false # include xdg-user-dir templates path
+sort: "name" # sort files by "name" or "extension"
+reverse: false # reverse the sorting order

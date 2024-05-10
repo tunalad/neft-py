@@ -139,8 +139,24 @@ def sort_files(files, sort_by, reverse):
 
 def add_template(file, template_dir):
     template_dir = normalize_path(template_dir)
-    copy(file, template_dir)
-    print(f"[NeFT] Added '{os.path.basename(file)}' to '{template_dir}'.")
+
+    file_name, extension = os.path.splitext(os.path.basename(file))
+
+    # if file with that name already exists, add index in the name
+    if os.path.exists(os.path.join(template_dir, f"{file_name}{extension}")):
+        index = 1
+        while os.path.exists(
+            os.path.join(template_dir, f"{file_name} ({index}){extension}")
+        ):
+            index += 1
+
+        new_file_name = f"{file_name} ({index}){extension}"
+    else:
+        new_file_name = f"{file_name}{extension}"
+
+    # copy the file w/ new name
+    copy(file, os.path.join(template_dir, new_file_name))
+    print(f"[NeFT] Added '{new_file_name}' to '{template_dir}'.")
 
 
 def remove_template(template_name, template_dir):
@@ -161,6 +177,12 @@ def rename_template(old_name, new_name, paths):
         new_path = normalize_path(f"{path}{new_name}")
 
         if os.path.isfile(possible_path):
+            # making sure file doesn't exist already
+            if os.path.exists(new_path):
+                print(f"[NeFT] '{new_path}' already exists. Skipping rename.")
+                return
+
+            # renaming
             move(possible_path, new_path)
             print(f"[NeFT] Renamed '{old_name}' to '{new_name}'.")
             return
